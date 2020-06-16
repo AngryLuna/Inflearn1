@@ -66,4 +66,18 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
     }
+
+    /**
+     * 회원 ID로 회원 정보 삭제
+     *
+     * @param id
+     */
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable final int id) {
+        final User user = this.service.deleteById(id);
+
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%d] not found", id));
+        }
+    }
 }
