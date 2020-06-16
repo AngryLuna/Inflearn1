@@ -41,7 +41,13 @@ public class UserController {
      */
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable final int id) {
-        return this.service.findOne(id);
+        final User user = this.service.findOne(id);
+
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%d] not found", id));
+        }
+
+        return user;
     }
 
     /**
