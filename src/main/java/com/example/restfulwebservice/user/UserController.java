@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class UserController {
      * @param user
      */
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody final User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) { // 회원 정보 데이터 유효성 체크
         final User savedUser = this.service.save(user);
 
         final URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -87,7 +88,7 @@ public class UserController {
      * @param user
      */
     @PutMapping("/users")
-    public void updateUserName(@RequestBody final User user) {
+    public void updateUserName(@Valid @RequestBody final User user) { // 회원 정보 데이터 유효성 체크
         final User updateUser = this.service.update(user);
 
         if (updateUser == null) {

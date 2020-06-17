@@ -1,8 +1,10 @@
 package com.example.restfulwebservice.exception;
 
 import com.example.restfulwebservice.user.UserNotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,5 +45,22 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         final ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getMessage(), request.getDescription(false));
 
         return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * ResponseEntityExceptionHandler.handleMethodArgumentNotValid 메서드 오버라이딩
+     * 유효성 체크 실패시 http status 400 응답
+     *
+     * @param e
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException e, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
+        final ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validation Failed", e.getBindingResult().toString());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
