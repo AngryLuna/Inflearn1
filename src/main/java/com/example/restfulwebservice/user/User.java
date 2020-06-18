@@ -1,5 +1,6 @@
 package com.example.restfulwebservice.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"password", "ssn"}) // password, ssn 필드는 응답시에 필터링 처리
 /**
  * 회원 정보 클래스
  */
@@ -21,8 +23,10 @@ public class User {
     @Past // 과거의 날짜 제한
     private Date joinDate;
 
+//    @JsonIgnore // 응답시 필터링
     private String password;
 
+//    @JsonIgnore // 응답시 필터링
     private String ssn;
 
     /**
