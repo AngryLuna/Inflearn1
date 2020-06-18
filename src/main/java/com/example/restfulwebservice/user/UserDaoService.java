@@ -96,22 +96,4 @@ public class UserDaoService {
 
         return null;
     }
-
-    /**
-     * 회원 정보 수정
-     *
-     * @param user
-     * @return
-     */
-    public User update(final User user) {
-        final User updateUser = findOne(user.getId());
-
-        if (updateUser == null) {
-            return null;
-        }
-
-        updateUser.update(user);
-
-        return updateUser;
-    }
 }

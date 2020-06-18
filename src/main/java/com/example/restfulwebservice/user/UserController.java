@@ -81,18 +81,4 @@ public class UserController {
             throw new UserNotFoundException(String.format("ID[%d] not found", id));
         }
     }
-
-    /**
-     * 회원 정보 수정
-     *
-     * @param user
-     */
-    @PutMapping("/users")
-    public void updateUserName(@Valid @RequestBody final User user) { // 회원 정보 데이터 유효성 체크
-        final User updateUser = this.service.update(user);
-
-        if (updateUser == null) {
-            throw new UserNotFoundException(String.format("ID[%d] not found", user.getId()));
-        }
-    }
 }
