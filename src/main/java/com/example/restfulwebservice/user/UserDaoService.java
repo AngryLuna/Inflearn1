@@ -24,9 +24,9 @@ public class UserDaoService {
 
     static {
         // DB에 3명의 유저가 등록되어있다고 가정
-        userList.add(new User(getNextUserId(), "TestUser1", new Date()));
-        userList.add(new User(getNextUserId(), "TestUser2", new Date()));
-        userList.add(new User(getNextUserId(), "TestUser3", new Date()));
+        userList.add(new User(getNextUserId(), "TestUser1", new Date(), "pwd1", "111111-2222222"));
+        userList.add(new User(getNextUserId(), "TestUser2", new Date(), "pwd2", "333333-4444444"));
+        userList.add(new User(getNextUserId(), "TestUser3", new Date(), "pwd3", "555555-6666666"));
     }
 
     /**

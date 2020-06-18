@@ -21,6 +21,10 @@ public class User {
     @Past // 과거의 날짜 제한
     private Date joinDate;
 
+    private String password;
+
+    private String ssn;
+
     /**
      * ID를 제외한 다른 데이터 수정
      *
@@ -29,5 +33,7 @@ public class User {
     public void update(final User other) {
         setName(other.getName());
         setJoinDate(other.getJoinDate());
+        setPassword(other.getPassword());
+        setSsn(other.getSsn());
     }
 }
