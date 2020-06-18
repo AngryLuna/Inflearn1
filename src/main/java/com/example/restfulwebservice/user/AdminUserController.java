@@ -34,8 +34,8 @@ public class AdminUserController {
      * @return
      */
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
-        return this.service.findAll();
+    public MappingJacksonValue retrieveAllUsers() {
+        return filterValue(this.service.findAll());
     }
 
     /**
@@ -52,12 +52,22 @@ public class AdminUserController {
             throw new UserNotFoundException(String.format("ID[%d] not found", id));
         }
 
-        final SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "password", "ssn");
+        return filterValue(user);
+    }
+
+    /**
+     * 회원 정보 필터링 처리
+     *
+     * @param value
+     * @return
+     */
+    private static MappingJacksonValue filterValue(final Object value) {
+        final SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "ssn");
 
         final FilterProvider filterProvider = new SimpleFilterProvider()
                 .addFilter("UserInfo", filter);
 
-        final MappingJacksonValue mapping = new MappingJacksonValue(user);
+        final MappingJacksonValue mapping = new MappingJacksonValue(value);
         mapping.setFilters(filterProvider);
 
         return mapping;
