@@ -12,20 +12,10 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonFilter("UserInfo")
+@JsonFilter("UserInfoV2")
 /**
- * 회원 정보 V1
+ * 회원 정보 V2
  */
-public class User {
-    private Integer id;
-
-    @Size(min = 2, message = "이름은 2글자 이상 입력해주세요") // 최소 2글자 이상 제한
-    private String name;
-
-    @Past // 과거의 날짜 제한
-    private Date joinDate;
-
-    private String password;
-
-    private String ssn;
+public class UserV2 extends User {
+    private String grade;
 }
