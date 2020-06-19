@@ -1,5 +1,8 @@
 package com.example.restfulwebservice.user;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -7,6 +10,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * 회원 정보 처리 RestController
@@ -41,14 +47,18 @@ public class UserController {
      * @return
      */
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable final int id) {
+    public EntityModel retrieveUser(@PathVariable final int id) {
         final User user = this.service.findOne(id);
 
         if (user == null) {
             throw new UserNotFoundException(String.format("ID[%d] not found", id));
         }
 
-        return user;
+        // HATEOAS
+        final WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        final Link builder = linkTo.withRel("all-users");
+
+        return EntityModel.of(user, builder);
     }
 
     /**
