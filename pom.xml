@@ -53,6 +53,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>1.4.197</version> <!-- 최신 버전의 경우 보안 문제로 인해 웹콘솔에서 DB 생성 불가, 이전 버전으로 설정 -->
             <scope>runtime</scope>
         </dependency>
         <dependency>
