@@ -8,6 +8,8 @@ logging:
 spring:
   messages:
     basename: messages
+  jpa:
+    show-sql: true
 
 management:
   endpoints:
