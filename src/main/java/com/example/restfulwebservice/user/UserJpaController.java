@@ -79,4 +79,17 @@ public class UserJpaController {
 
         return ResponseEntity.created(location).build();
     }
+
+    /**
+     * 회원 번호로 등록된 게시물 정보 검색
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostByUser(@PathVariable final int id) {
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(String.format("ID[%d] not found", id)))
+                .getPosts();
+    }
 }
