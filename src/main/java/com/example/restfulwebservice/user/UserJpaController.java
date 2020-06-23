@@ -2,12 +2,12 @@ package com.example.restfulwebservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -49,5 +49,34 @@ public class UserJpaController {
         resource.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
 
         return resource;
+    }
+
+    /**
+     * 회원 ID로 회원 정보 삭제
+     *
+     * @param id
+     * @throws UserNotFoundException
+     */
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable final int id) throws UserNotFoundException {
+        this.userRepository.deleteById(id);
+    }
+
+    /**
+     * 신규 회원 등록
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@Valid @RequestBody final User user) {
+        final User createdUser = this.userRepository.save(user);
+
+        final URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
