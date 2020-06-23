@@ -22,6 +22,9 @@ public class UserJpaController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     /**
      * 전체 회원 정보 검색
      *
@@ -91,5 +94,29 @@ public class UserJpaController {
         return this.userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(String.format("ID[%d] not found", id)))
                 .getPosts();
+    }
+
+    /**
+     * 게시물 등록
+     *
+     * @param id
+     * @param post
+     * @return
+     */
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<User> createUser(@PathVariable final int id, @Valid @RequestBody final Post post) {
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(String.format("ID[%d] not found", id)));
+
+        post.setUser(user);
+
+        final Post createdPost = this.postRepository.save(post);
+
+        final URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdPost.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
