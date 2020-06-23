@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -39,4 +41,24 @@ public class User {
 
     @ApiModelProperty(notes = "회원 주민번호를 입력해주세요")
     private String ssn;
+
+    @OneToMany(mappedBy = "user") // User : Post = 1 : N
+    private List<Post> posts;
+
+    /**
+     * 생성자 (JPA 사용하지 않는 테스트코드 오류 회피용)
+     *
+     * @param id
+     * @param name
+     * @param joinDate
+     * @param password
+     * @param ssn
+     */
+    public User(final int id, final String name, final Date joinDate, final String password, final String ssn) {
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 }
